@@ -1,13 +1,27 @@
 const express = require('express');
 const app = express();
-const port = 80;
+const port = 3000;
 const { MongoClient } = require('mongodb');
 const url = 'mongodb://root:root@mongo:27017';
 
 (async function () {
-  client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+  const client = await MongoClient.connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  const db = client.db('startup');
 
-  app.get('/form', (req, res) => {
+  app.get('/form', async (req, res) => {
+    const result = await db.collection('form').find({ _id: req.params.id }).toArray();
+    res.send(result);
+  });
+  app.post('/form', async (req, res) => {
+    res.send('post form' + req.body);
+    const result = await db.collection('form').insertOne(req.body);
+    res.json(result);
+  });
+
+  app.post('/submit_form', (req, res) => {
     res.send('Hello World!');
   });
 
