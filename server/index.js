@@ -5,7 +5,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const port = 80;
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const url = 'mongodb://root:root@mongo:27017';
 
@@ -18,7 +18,11 @@ const url = 'mongodb://root:root@mongo:27017';
 
   app.get('/form/:id', async (req, res) => {
     console.log('get form' + JSON.stringify(req.params));
-    const result = await db.collection('form').find({ _id: req.params.id }).toArray();
+    const result = await db
+      .collection('form')
+      .find({ _id: new ObjectId(req.params.id) })
+      .toArray();
+    console.log('get form' + JSON.stringify(req.params));
     res.send(result);
   });
   app.post('/form', async (req, res) => {
