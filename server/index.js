@@ -1,11 +1,17 @@
-const express = require('express')
-const app = express()
-const port = 80
+const express = require('express');
+const app = express();
+const port = 80;
+const { MongoClient } = require('mongodb');
+const url = 'mongodb://mongo:27017';
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+(async function () {
+  client = await MongoClient.connect(url, { useNewUrlParser: true });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+  app.get('/form', (req, res) => {
+    res.send('Hello World!');
+  });
+
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
+})();
