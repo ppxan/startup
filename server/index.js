@@ -5,7 +5,7 @@ const { MongoClient } = require('mongodb');
 const url = 'mongodb://root:root@mongo:27017';
 
 (async function () {
-  client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopol: true });
+  client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
   app.get('/form', (req, res) => {
     res.send('Hello World!');
