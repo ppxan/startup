@@ -16,7 +16,7 @@ const url = 'mongodb://root:root@mongo:27017';
   });
   const db = client.db('startup');
 
-  app.get('/form', async (req, res) => {
+  app.get('/form/:id', async (req, res) => {
     console.log('get form' + JSON.stringify(req.params));
     const result = await db.collection('form').find({ _id: req.params.id }).toArray();
     res.send(result);
