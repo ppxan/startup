@@ -20,10 +20,12 @@ services:
     ports:
       - '8080:8081'
   backend:
+    restart: always
     depends_on:
       - mongo
     build: ./server
   frontend:
+    restart: always
     depends_on:
       - backend
     build: .
