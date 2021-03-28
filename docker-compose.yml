@@ -26,6 +26,8 @@ services:
     build: ./server
     external_links:
       - mongo
+    ports:
+      - '3000:80'
   frontend:
     restart: always
     depends_on:
