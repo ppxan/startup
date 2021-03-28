@@ -24,6 +24,9 @@ const url = 'mongodb://root:root@mongo:27017';
   app.post('/submit_form', (req, res) => {
     res.send('Hello World!');
   });
+  app.get('/', (req, res) => {
+    res.send('Hello World!');
+  });
 
   app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
