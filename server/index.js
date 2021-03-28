@@ -16,6 +16,7 @@ const url = 'mongodb://root:root@mongo:27017';
   });
   const db = client.db('startup');
 
+  // load form
   app.get('/form/:id', async (req, res) => {
     console.log('get form' + JSON.stringify(req.params));
     const result = await db
@@ -25,12 +26,15 @@ const url = 'mongodb://root:root@mongo:27017';
     console.log('get form' + JSON.stringify(req.params));
     res.send(result);
   });
+
+  // create form
   app.post('/form', async (req, res) => {
     console.log('post form' + req.body);
     const result = await db.collection('form').insertOne(req.body);
     res.json(result);
   });
 
+  // submit form
   app.post('/submit/:id', async (req, res) => {
     const result = await db.collection('form').updateOne(
       { _id: ObjectId(req.params.id) },
@@ -42,11 +46,6 @@ const url = 'mongodb://root:root@mongo:27017';
     );
     res.json(result);
   });
-  app.get('/', (req, res) => {
-    res.send('Hello World!');
-  });
 
-  app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-  });
+  app.listen(port, () => {});
 })();
