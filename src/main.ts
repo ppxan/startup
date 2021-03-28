@@ -1,19 +1,19 @@
-import { createApp, h } from 'vue';
+import { Component, createApp, defineComponent, h } from 'vue';
 import UserForm from './pages/UserForm.vue';
 import Vant from 'vant';
 import 'vant/lib/index.css';
 
-const routes = {
+const routes: { [key: string]: Component } = {
   '/form': UserForm,
 };
 
-const SimpleRouter = {
+const SimpleRouter = defineComponent({
   data: () => ({
     currentRoute: window.location.pathname,
   }),
 
   computed: {
-    CurrentComponent() {
+    CurrentComponent(): Component {
       return routes[this.currentRoute] || { render: () => h('div', 'Not found') };
     },
   },
@@ -21,7 +21,7 @@ const SimpleRouter = {
   render() {
     return h(this.CurrentComponent);
   },
-};
+});
 
 const app = createApp(SimpleRouter);
 app.use(Vant);
