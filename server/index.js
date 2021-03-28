@@ -31,8 +31,16 @@ const url = 'mongodb://root:root@mongo:27017';
     res.json(result);
   });
 
-  app.post('/submit_form', (req, res) => {
-    res.send('Hello World!');
+  app.post('/submit/:id', async (req, res) => {
+    const result = await db.collection('form').updateOne(
+      { _id: ObjectId(req.params.id) },
+      {
+        $push: {
+          result: req.body,
+        },
+      }
+    );
+    res.json(result);
   });
   app.get('/', (req, res) => {
     res.send('Hello World!');
