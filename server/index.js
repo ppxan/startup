@@ -21,7 +21,7 @@ const url = 'mongodb://root:root@mongo:27017';
     res.send(result);
   });
   app.post('/form', async (req, res) => {
-    res.send('post form' + req.body);
+    console.log('post form' + req.body);
     const result = await db.collection('form').insertOne(req.body);
     res.json(result);
   });
