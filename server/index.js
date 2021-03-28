@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 80;
 const { MongoClient } = require('mongodb');
 const url = 'mongodb://root:root@mongo:27017';
 
