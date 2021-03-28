@@ -2,8 +2,7 @@ FROM node:12-alpine3.11 as build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --registry https://registry.npm.taobao.org
-COPY ./src ./src
-COPY ./public ./public
+COPY ./ .
 RUN npm run build
 
 FROM nginx as production-stage
