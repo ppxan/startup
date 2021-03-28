@@ -24,6 +24,8 @@ services:
     depends_on:
       - mongo
     build: ./server
+    external_links:
+      - mongo
   frontend:
     restart: always
     depends_on:
