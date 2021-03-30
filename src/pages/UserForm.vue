@@ -4,7 +4,7 @@
       <van-field
         v-if="item.type === 'input'"
         :key="item.id"
-        v-model="state[item.id]"
+        v-model="formState[item.id]"
         :name="item.id"
         :label="item.label"
       />
@@ -15,7 +15,7 @@
         :label="item.label"
       >
         <template #input>
-          <van-radio-group v-model="state[item.id]" direction="horizontal">
+          <van-radio-group v-model="formState[item.id]" direction="horizontal">
             <van-radio v-for="option in item.options" :key="option.id" :name="option.id">{{
               option.label
             }}</van-radio>
@@ -29,7 +29,7 @@
         :label="item.label"
       >
         <template #input>
-          <van-checkbox-group v-model="state[item.id]" direction="horizontal">
+          <van-checkbox-group v-model="formState[item.id]" direction="horizontal">
             <van-checkbox
               v-for="option in item.options"
               :key="option.id"
@@ -48,27 +48,39 @@
 </template>
 
 <script lang="ts">
-import { reactive, computed, defineComponent, ref } from 'vue';
-import mockdata from '../mockdata';
-import { Question } from '../types';
+import { reactive, computed, defineComponent, ref, onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { Form, Question } from '../types';
+import { getForm } from '../utils/api';
 
 export default defineComponent({
   name: 'UserForm',
-  setup: () => {
-    const a: { [key: string]: any } = {};
-    mockdata.questions.forEach((item) => {
-      if (item.type === 'checkboxGroup') {
-        a[item.id] = ref([]);
-      } else {
-        a[item.id] = '';
-      }
+  setup() {
+    const route = useRoute();
+    const formState = reactive<{ [key: string]: any }>({});
+    const form = ref<Form | undefined>();
+
+    // 加载数据
+    onMounted(async () => {
+      form.value = await getForm(route.params.id as string);
     });
-    const state = reactive(a);
+
+    // 初始化表单
+    watch(form, () => {
+      form.value?.questions.forEach((item) => {
+        if (item.type === 'checkboxGroup') {
+          formState[item.id] = [];
+        } else {
+          formState[item.id] = '';
+        }
+      });
+    });
+    // 计算当前需要展示的表单项
     const getQuestionAndChildren = (q: Question): Question[] => {
       if (q.type !== 'radio') {
         return [q];
       }
-      const selectedOption = q.options.find((option) => state[q.id] === option.id);
+      const selectedOption = q.options.find((option) => formState[q.id] === option.id);
       if (!selectedOption) {
         return [q];
       }
@@ -76,15 +88,20 @@ export default defineComponent({
       children = children.flatMap((item) => getQuestionAndChildren(item));
       return [q, ...children];
     };
-
     const questions = computed(() => {
-      return mockdata.questions.flatMap(getQuestionAndChildren);
+      return form.value?.questions.flatMap(getQuestionAndChildren) || [];
     });
 
+    // 提交表单
     const onSubmit = (values: object) => {
       console.log('submit', values);
     };
-    return { state, onSubmit, mockdata, questions };
+
+    return {
+      formState,
+      onSubmit,
+      questions,
+    };
   },
 });
 </script>

@@ -55,6 +55,7 @@ import { Question } from '../types';
 export default defineComponent({
   name: 'UserForm',
   setup: () => {
+    console.log(1);
     const a: { [key: string]: any } = {};
     mockdata.questions.forEach((item) => {
       if (item.type === 'checkboxGroup') {
