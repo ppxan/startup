@@ -94,8 +94,8 @@ export default defineComponent({
     });
 
     // 提交表单
-    const onSubmit = async (values: object) => {
-      const result = await submitForm(route.params.id as string, values);
+    const onSubmit = async () => {
+      const result = await submitForm(route.params.id as string, formState);
       if (result.ok) {
         Toast.success('提交成功啦！');
       }
