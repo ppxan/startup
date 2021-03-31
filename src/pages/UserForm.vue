@@ -42,7 +42,7 @@
       </van-field>
     </template>
     <div style="margin: 16px">
-      <van-button round block type="primary" native-type="submit"> 提交 </van-button>
+      <van-button round block type="primary" @click="onSubmit"> 提交 </van-button>
     </div>
   </van-form>
 </template>
@@ -51,7 +51,8 @@
 import { reactive, computed, defineComponent, ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { Form, Question } from '../types';
-import { getForm } from '../utils/api';
+import { getForm, submitForm } from '../utils/api';
+import { Toast } from 'vant';
 
 export default defineComponent({
   name: 'UserForm',
@@ -93,8 +94,11 @@ export default defineComponent({
     });
 
     // 提交表单
-    const onSubmit = (values: object) => {
-      console.log('submit', values);
+    const onSubmit = async (values: object) => {
+      const result = await submitForm(route.params.id as string, values);
+      if (result.ok) {
+        Toast.success('提交成功啦！');
+      }
     };
 
     return {
