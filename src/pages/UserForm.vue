@@ -4,7 +4,7 @@
     <div class="description">请如实填写你的信息</div>
   </div>
   <div class="form">
-    <van-form @submit="onSubmit">
+    <van-form @submit="submit">
       <template v-for="item in questions">
         <van-field
           v-if="item.type === 'input'"
@@ -47,12 +47,12 @@
         </van-field>
       </template>
       <div style="margin: 16px">
-        <van-button round block type="primary" :loading="formSubmit.data.loading" @click="submit">
+        <van-button round block type="primary" :loading="formSubmit.loading" @click="submit">
           提交
         </van-button>
       </div>
-    </van-form></div
-  >
+    </van-form>
+  </div>
 </template>
 
 <script lang="ts">
