@@ -24,5 +24,7 @@ export type Question =
     };
 
 export interface Form {
+  title: string;
+  description?: string;
   questions: Question[];
 }

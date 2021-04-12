@@ -1,10 +1,17 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import UserFrom from './pages/UserForm.vue';
+import IndexPage from './pages/index.vue';
 
 // 2. Define some routes
 // Each route should map to a component.
 // We'll talk about nested routes later.
-const routes = [{ path: '/form/:id', component: UserFrom }];
+const routes: RouteRecordRaw[] = [
+  { path: '/form/:id', component: UserFrom },
+  {
+    path: '/',
+    component: IndexPage,
+  },
+];
 
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
