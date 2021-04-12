@@ -49,43 +49,13 @@
 
 <script lang="ts">
 import { reactive, computed, defineComponent, ref } from 'vue';
-import mockdata from '../mockdata';
-import { Question } from '../types';
+import { Question, Form } from '../types';
 
 export default defineComponent({
-  name: 'UserForm',
+  name: 'CreateForm',
   setup: () => {
-    console.log(1);
-    const a: { [key: string]: any } = {};
-    mockdata.questions.forEach((item) => {
-      if (item.type === 'checkboxGroup') {
-        a[item.id] = ref([]);
-      } else {
-        a[item.id] = '';
-      }
-    });
-    const state = reactive(a);
-    const getQuestionAndChildren = (q: Question): Question[] => {
-      if (q.type !== 'radio') {
-        return [q];
-      }
-      const selectedOption = q.options.find((option) => state[q.id] === option.id);
-      if (!selectedOption) {
-        return [q];
-      }
-      let children = selectedOption.children || [];
-      children = children.flatMap((item) => getQuestionAndChildren(item));
-      return [q, ...children];
-    };
-
-    const questions = computed(() => {
-      return mockdata.questions.flatMap(getQuestionAndChildren);
-    });
-
-    const onSubmit = (values: object) => {
-      console.log('submit', values);
-    };
-    return { state, onSubmit, mockdata, questions };
+    const form = reactive<Form>({ questions: [] });
+    return { form };
   },
 });
 </script>
